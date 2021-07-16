@@ -1,0 +1,26 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
+metadata:
+  name: cluster02	# TKG cluster Name. Must be alphanumeric and dashes only
+  namespace: tkg-ko2 	# Supervisor Cluster namespace the TKG cluster will be deployed to
+spec:
+  distribution:
+    fullVersion: v1.19.7---vmware.1-tkg.2.f52f85a
+    version:  1.19.7---vmware.1-tkg.2.f52f85a
+  topology:
+    controlPlane:
+      count: 1 				# Number of control VMs
+      class: guaranteed-xsmall 		# VM size for the control VMs
+      storageClass: k8s  # Storage Class (VM Storage Policy) for control VMs
+    workers:
+      count: 2 				# Number of worker VMs
+      class: guaranteed-xsmall 		# VM size for the worker VMs
+      storageClass: k8s	# Storage Class (VM Storage Policy) for worker VMs
+  settings:
+    network:
+      cni:
+        name: calico
+      services:
+        cidrBlocks: ["172.16.100.0/24"]
+      pods:
+        cidrBlocks: ["172.16.200.0/24"]
